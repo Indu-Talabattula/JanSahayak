@@ -40,38 +40,8 @@ const schemeSchema = new mongoose.Schema(
       type: String,
     },
     rules: {
-      minAge: {
-        type: Number,
-        default: null,
-      },
-      maxAge: {
-        type: Number,
-        default: null,
-      },
-      gender: {
-        type: String,
-        default: 'All',
-      },
-      state: {
-        type: String,
-        default: 'All',
-      },
-      occupation: {
-        type: String,
-        default: 'All',
-      },
-      category: {
-        type: String,
-        default: 'All',
-      },
-      disability: {
-        type: Boolean,
-        default: null,
-      },
-      maxAnnualIncome: {
-        type: Number,
-        default: null,
-      },
+      type: mongoose.Schema.Types.Mixed,
+      default: {},
     },
     documents: {
       type: [String],
@@ -89,6 +59,10 @@ const schemeSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    lastVerifiedAt: {
+      type: Date,
+      default: Date.now,
+    },
     lastUpdated: {
       type: Date,
       default: Date.now,
@@ -101,7 +75,23 @@ const schemeSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
+
+// Virtual aliases for flexibility across APIs
+schemeSchema.virtual('name').get(function () {
+  return this.schemeName;
+});
+schemeSchema.virtual('officialUrl').get(function () {
+  return this.officialWebsite;
+});
+schemeSchema.virtual('documentsRequired').get(function () {
+  return this.documents;
+});
+schemeSchema.virtual('eligibility').get(function () {
+  return this.rules;
+});
 
 module.exports = mongoose.model('Scheme', schemeSchema);
