@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const schemeRoutes = require('./routes/schemeRoutes');
+const conversationRoutes = require('./routes/conversationRoutes');
 const { notFoundHandler, errorHandler } = require('./middleware/errorMiddleware');
 
 const app = express();
@@ -21,6 +22,7 @@ app.get('/api/health', (req, res) => {
 // Mount Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/schemes', schemeRoutes);
+app.use('/api/conversations', conversationRoutes);
 
 // Error Handling Middleware
 app.use(notFoundHandler);

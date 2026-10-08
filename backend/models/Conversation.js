@@ -1,5 +1,13 @@
 const mongoose = require('mongoose');
 
+const normalizeLanguage = (lang) => {
+  if (!lang) return 'en';
+  const lower = String(lang).toLowerCase().trim();
+  if (lower === 'hi' || lower === 'hindi') return 'hi';
+  if (lower === 'te' || lower === 'telugu') return 'te';
+  return 'en';
+};
+
 const conversationSchema = new mongoose.Schema(
   {
     user: {
@@ -15,8 +23,9 @@ const conversationSchema = new mongoose.Schema(
     },
     language: {
       type: String,
-      enum: ['English', 'Hindi', 'Telugu'],
-      default: 'English',
+      enum: ['en', 'hi', 'te', 'English', 'Hindi', 'Telugu'],
+      default: 'en',
+      set: normalizeLanguage,
     },
   },
   {
