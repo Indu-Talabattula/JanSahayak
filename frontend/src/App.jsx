@@ -4,9 +4,10 @@ import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import DashboardPlaceholder from './pages/DashboardPlaceholder';
-import SchemesPlaceholder from './pages/SchemesPlaceholder';
-import ChatPlaceholder from './pages/ChatPlaceholder';
+import Dashboard from './pages/Dashboard';
+import Schemes from './pages/Schemes';
+import SchemeDetails from './pages/SchemeDetails';
+import Chat from './pages/Chat';
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
                 path="/dashboard"
                 element={
                   <ProtectedRoute>
-                    <DashboardPlaceholder />
+                    <Dashboard />
                   </ProtectedRoute>
                 }
               />
@@ -33,7 +34,15 @@ function App() {
                 path="/schemes"
                 element={
                   <ProtectedRoute>
-                    <SchemesPlaceholder />
+                    <Schemes />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/schemes/:id"
+                element={
+                  <ProtectedRoute>
+                    <SchemeDetails />
                   </ProtectedRoute>
                 }
               />
@@ -41,12 +50,12 @@ function App() {
                 path="/chat"
                 element={
                   <ProtectedRoute>
-                    <ChatPlaceholder />
+                    <Chat />
                   </ProtectedRoute>
                 }
               />
 
-              {/* Default Redirect */}
+              {/* Default Redirects */}
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
               <Route path="*" element={<Navigate to="/dashboard" replace />} />
             </Routes>
