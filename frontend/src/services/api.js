@@ -40,7 +40,7 @@ export const authAPI = {
   getMe: () => API.get('/auth/me'),
 };
 
-// ─── Scheme APIs ───
+// ─── Scheme APIs (Public/Citizen) ───
 export const schemeAPI = {
   getAll: (params = {}) => API.get('/schemes', { params }),
   getById: (id) => API.get(`/schemes/${id}`),
@@ -53,6 +53,18 @@ export const conversationAPI = {
   getAll: () => API.get('/conversations'),
   getById: (id) => API.get(`/conversations/${id}`),
   sendMessage: (id, message) => API.post(`/conversations/${id}/messages`, { message }),
+};
+
+// ─── Admin APIs ───
+export const adminAPI = {
+  getDashboard: () => API.get('/admin/dashboard'),
+  getUsers: (params = {}) => API.get('/admin/users', { params }),
+  getSchemes: (params = {}) => API.get('/admin/schemes', { params }),
+  getSchemeById: (id) => API.get(`/admin/schemes/${id}`),
+  createScheme: (data) => API.post('/admin/schemes', data),
+  updateScheme: (id, data) => API.put(`/admin/schemes/${id}`, data),
+  toggleSchemeStatus: (id, isActive) => API.patch(`/admin/schemes/${id}/status`, { isActive }),
+  deleteScheme: (id) => API.delete(`/admin/schemes/${id}`),
 };
 
 // ─── Health ───

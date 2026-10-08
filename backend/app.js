@@ -3,6 +3,7 @@ const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const schemeRoutes = require('./routes/schemeRoutes');
 const conversationRoutes = require('./routes/conversationRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 const { notFoundHandler, errorHandler } = require('./middleware/errorMiddleware');
 
 const app = express();
@@ -23,6 +24,7 @@ app.get('/api/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/schemes', schemeRoutes);
 app.use('/api/conversations', conversationRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Error Handling Middleware
 app.use(notFoundHandler);

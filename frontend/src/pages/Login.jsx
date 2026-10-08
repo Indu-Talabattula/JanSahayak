@@ -9,12 +9,12 @@ const Login = () => {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
 
   // Redirect if already authenticated
   if (isAuthenticated) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to={user?.role === 'admin' ? '/admin/dashboard' : '/dashboard'} replace />;
   }
 
   const handleSubmit = async (e) => {
@@ -29,8 +29,12 @@ const Login = () => {
 
     setIsSubmitting(true);
     try {
-      await login(email.trim(), password);
-      navigate('/dashboard');
+      const loggedInUser = await login(email.trim(), password);
+      if (loggedInUser?.role === 'admin') {
+        navigate('/admin/dashboard');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (err) {
       if (err.response && err.response.data && err.response.data.message) {
         setError(err.response.data.message);
@@ -48,8 +52,8 @@ const Login = () => {
     <div className="auth-container">
       <div className="auth-card">
         <div className="auth-header">
-          <h1>Citizen Login</h1>
-          <p>Access your JanSahayak citizen assistance portal</p>
+          <h1>Citizen & Admin Login</h1>
+          <p>Access your JanSahayak portal</p>
         </div>
 
         {error && <div className="auth-error-alert">{error}</div>}
@@ -87,7 +91,7 @@ const Login = () => {
             {isSubmitting ? (
               <>
                 <span className="btn-spinner"></span>
-                <span>Logging in...</span>
+                <span>Signing in...</span>
               </>
             ) : (
               'Sign In'

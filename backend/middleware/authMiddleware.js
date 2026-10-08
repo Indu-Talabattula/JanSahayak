@@ -39,4 +39,22 @@ const protect = async (req, res, next) => {
   }
 };
 
-module.exports = { protect };
+const requireAdmin = (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({
+      success: false,
+      message: 'Not authorized, no user context',
+    });
+  }
+
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({
+      success: false,
+      message: 'Forbidden: Administrator privileges required',
+    });
+  }
+
+  next();
+};
+
+module.exports = { protect, requireAdmin };
